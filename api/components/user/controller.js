@@ -1,11 +1,32 @@
-const store = require('../../../store/dummy');
-
 const TABLA = 'user';
 
-function list(){
-  return store.list(TABLA);
-}
+module.exports = function(injectStore) {
+  let store = injectStore;
 
-module.exports = {
-  list
+  if(!store){
+    store = require('../../../store/dummy');
+  }
+
+  async function list(){
+    return await store.list(TABLA);
+  }
+
+  async function get(id){
+    return await store.get(TABLA, id);
+  }
+
+  async function upsert(data){
+    return await store.upsert(TABLA, data);
+  }
+
+  async function remove(id){
+    return await store.get(TABLA, id);
+  }
+
+  return {
+    list,
+    get,
+    upsert,
+    remove
+  }
 }
