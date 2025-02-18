@@ -1,46 +1,46 @@
 const nanoid = require("nanoid");
 const auth = require("../auth");
-const TABLA = 'user';
+const TABLA = "user";
 
-module.exports = function(injectStore) {
+module.exports = function (injectStore) {
   let store = injectStore;
 
-  if(!store){
-    store = require('../../../store/dummy');
+  if (!store) {
+    store = require("../../../store/dummy");
   }
 
-  async function list(){
+  async function list() {
     return await store.list(TABLA);
   }
 
-  async function get(id){
+  async function get(id) {
     return await store.get(TABLA, id);
   }
 
-  async function upsert(body){
-    const user = {
+  async function upsert(body) {
+    let user = {
       name: body.name,
-      username: body.username
-    }
+      username: body.username,
+    };
 
-    if(body.id){
-      user.id = body.id
-    }else{
+    if (body.id) {
+      user.id = body.id;
+    } else {
       user.id = nanoid();
     }
 
-    if(body.username || body.password){
+    if (body.username || body.password) {
       await auth.upsert({
         id: user.id,
         username: user.username,
         password: body.password,
-      })
+      });
     }
 
     return await store.upsert(TABLA, user);
   }
 
-  async function remove(id){
+  async function remove(id) {
     return await store.get(TABLA, id);
   }
 
@@ -48,6 +48,6 @@ module.exports = function(injectStore) {
     list,
     get,
     upsert,
-    remove
-  }
-}
+    remove,
+  };
+};
