@@ -13,7 +13,9 @@ function verify(token){
 const check = {
   own: function (req, owner){
     const decoded = decodedHeader(req);
-    console.log(decoded);
+    if(decoded.id !== owner){
+      throw new Error('No puedes hacer esto')
+    }
   }
 }
 
