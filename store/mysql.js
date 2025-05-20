@@ -43,8 +43,55 @@ function list(tabla){
       resolve(data);
     })
   })
+};
+
+function get(tabla, id){
+  return new Promise((resolve, reject) => {
+    connection.query(`SELECT * FROM ${tabla} WHERE id=${id}`, (err, data)=>{
+      if(err) return reject(err);
+      resolve(data)
+    })
+  })
+}
+
+function insert(tabla, data) {
+  return new Promise((resolve, reject) => {
+    connection.query(`INSERT INTO ${tabla} SET ?`, data, (err, result) => {
+      if(err) return reject(err);
+      resolve(result);
+    })
+  })
+}
+
+function update(tabla, data) {
+  return new Promise((resolve, reject) => {
+    connection.query(`UPDATE ${tabla} SET ? WHERE id=?`, [data, data.id], (err, result) => {
+      if(err) return reject(err);
+      resolve(result);
+    })
+  })
+}
+
+function upsert(tabla, data){
+  if(data && data.id){
+    return update(tabla, data);
+  }else{
+    return insert(tabla, data)
+  }
+}
+
+function query(tabla, query){
+  return new Promise((resolve, reject) => {
+    connection.query(`SELECT * FROM ${tabla} WHERE ?`,query, (err, res) =>{
+      if(err) return reject(err);
+      resolve(res);
+    })
+  })
 }
 
 module.exports = {
-  list
+  list,
+  get,
+  upsert,
+  query
 }
