@@ -9,6 +9,8 @@ router.get("/", list);
 
 router.get("/:id", get);
 
+router.get("/follow/:id", follow);
+
 router.post("/", upsert);
 
 router.put("/",secure('update'), upsert);
@@ -45,6 +47,14 @@ function remove(req, res, next) {
       response.success(req, res, state, 200);
     })
     .catch(next);
+}
+
+function follow(req, res, next){
+  Controller.follow(req.user.id, req.params.id)
+    .then(data =>{
+      response.success(req, res, data, 201)
+    })
+    .catch(next)
 }
 
 module.exports = router;
