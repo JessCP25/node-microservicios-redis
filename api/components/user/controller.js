@@ -51,11 +51,20 @@ module.exports = function (injectStore) {
     })
   }
 
+  async function following(user){
+    const join = {}
+    join[TABLA] = 'user_to';
+    const query = {user_from: user};
+
+    return await store.query(TABLA+ '_follow', query, join)
+  }
+
   return {
     list,
     get,
     upsert,
     remove,
     follow,
+    following,
   };
 };
