@@ -99,6 +99,8 @@ function query(tabla, query, join){
 module.exports = {
   list,
   get,
+  insert,
+  update,
   upsert,
   query
 }
