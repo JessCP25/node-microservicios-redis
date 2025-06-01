@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./api/index.js",
     "dev-micro": "nodemon ./mysql/index.js",
-    "dev-post": "nodemon ./post/index.js"
+    "dev-post": "nodemon ./post/index.js",
+    "dev-cache": "nodemon ./cache/index-cache.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1",
     "nanoid": "^2.1.7",
+    "redis": "^5.1.1",
     "request": "^2.88.2",
     "swagger-ui-express": "^5.0.1"
   },

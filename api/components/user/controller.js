@@ -2,15 +2,28 @@ const nanoid = require("nanoid");
 const auth = require("../auth");
 const TABLA = "user";
 
-module.exports = function (injectStore) {
+module.exports = function (injectStore, injectCache) {
   let store = injectStore;
+  let cache = injectCache;
 
   if (!store) {
     store = require("../../../store/dummy");
   }
 
+  if (!cache) {
+    cache = require("../../../store/dummy");
+  }
+
   async function list() {
-    return await store.list(TABLA);
+    let users = await cache.list(TABLA);
+    if(!users){
+      console.log('No estaba en cache')
+      users = await store.list(TABLA);
+      cache.upsert(TABLA, users);
+    }else{
+      console.log('Nos lo traemos de cache')
+    }
+    return users;
   }
 
   async function get(id) {
